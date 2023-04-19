@@ -1,0 +1,47 @@
+POST https://api.todolist.local/register
+Accept: application/json
+Content-Type: application/json
+
+{
+  "email": "test4@test.com",
+  "password": "test"
+}
+
+###
+POST https://api.todolist.local/login
+Accept: application/json
+Content-Type: application/json
+
+{
+  "email": "elfayouz@gmail.com",
+  "password": "admin"
+}
+
+> {%
+    client.global.set("token", response.body.token)
+ %}
+
+###
+GET https://api.todolist.local/users/me
+Accept: application/json
+Cookie: XDEBUG_SESSION=PHPSTORM-FAEZ
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+###
+GET https://api.todolist.local/users
+Accept: application/json
+Cookie: XDEBUG_SESSION=PHPSTORM-FAEZ
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+###
+GET https://api.todolist.local/users?roles=admin
+Accept: application/json
+Cookie: XDEBUG_SESSION=PHPSTORM-FAEZ
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+###
+OPTIONS https://localhost/register
+
