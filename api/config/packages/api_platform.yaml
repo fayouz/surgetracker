@@ -1,0 +1,17 @@
+api_platform:
+    title: Hello API Platform
+    version: 1.0.0
+    # Mercure integration, remove if unwanted
+    mercure: ~
+    exception_to_status:
+        # By default, all exceptions are mapped to a 500 status code.
+        # You can override this behavior by setting the following configuration:
+        # App\Exception\SomeException: 400
+        Doctrine\DBAL\Exception\UniqueConstraintViolationException: 409
+    # Good cache defaults for REST APIs
+    defaults:
+        stateless: true
+        cache_headers:
+            vary: ['Content-Type', 'Authorization', 'Origin']
+        extra_properties:
+            standard_put: true
