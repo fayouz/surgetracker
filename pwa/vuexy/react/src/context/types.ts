@@ -23,6 +23,16 @@ export type UserDataType = {
   avatar?: string | null
 }
 
+export type UserDataTypeOld = {
+  id: number
+  role: string
+  email: string
+  fullName: string
+  username: string
+  password: string
+  avatar?: string | null
+}
+
 export type AuthValuesType = {
   loading: boolean
   logout: () => void

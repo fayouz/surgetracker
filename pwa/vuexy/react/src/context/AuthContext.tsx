@@ -109,10 +109,7 @@ const AuthProvider = ({ children }: Props) => {
   const handleRegister = (params: RegisterParams, errorCallback?: ErrCallbackType) => {
 
     axios
-        .post(authConfig.registerEndpoint, params,{
-            crossDomain: true,
-
-        })
+        .post(authConfig.registerEndpoint, params)
         .then(async response => {
              const redirectURL =  '/login'
 

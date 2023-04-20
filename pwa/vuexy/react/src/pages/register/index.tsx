@@ -112,7 +112,7 @@ const Register = () => {
     resolver: yupResolver(schema)
   })
 
-  const handleErrCallback = err => {
+  const handleErrCallback = (err: any) => {
     setError('email', {
       type: 'manual',
       message: 'Email Already Exists',
@@ -120,9 +120,9 @@ const Register = () => {
     })
   }
 
-  const handleRegister = event => {
+  const handleRegister = (event:any) => {
     event.preventDefault();
-    register({ email, password }, err => handleErrCallback(err))
+    register({ email, password }, (err:any) => handleErrCallback(err))
   }
 
   return (
@@ -201,7 +201,7 @@ const Register = () => {
                          error={Boolean(errors.email)}
                          onChange={(e) => setEmail(e.target.value)}
               />
-              {errors.email && <FormHelperText sx={{ color: 'error.main' }}>{errors.email.message}</FormHelperText>}
+
               </FormControl>
                 <FormControl fullWidth>
                 <InputLabel htmlFor='auth-login-v2-password'>Password</InputLabel>

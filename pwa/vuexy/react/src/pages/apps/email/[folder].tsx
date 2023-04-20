@@ -1,8 +1,8 @@
 // ** Next Import
-import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from 'next/types'
+import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from "next/types"
 
 // ** Third Party Imports
-import axios from 'axios'
+import axios from "axios"
 
 // ** Types
 import { MailLayoutType, MailType } from 'src/types/apps/emailTypes'

@@ -31,7 +31,7 @@ import { fetchData } from 'src/store/apps/user'
 
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
-import { UsersType } from 'src/types/apps/userTypes'
+import {UsersType, UsersTypeOld} from 'src/types/apps/userTypes'
 import { ThemeColor } from 'src/@core/layouts/types'
 
 // ** Custom Components Imports
@@ -46,7 +46,7 @@ interface UserStatusType {
 }
 
 interface CellType {
-  row: UsersType
+  row: UsersTypeOld
 }
 
 // ** Vars
@@ -65,7 +65,7 @@ const userStatusObj: UserStatusType = {
 }
 
 // ** renders client column
-const renderClient = (row: UsersType) => {
+const renderClient = (row: UsersTypeOld) => {
   if (row.avatar.length) {
     return <CustomAvatar src={row.avatar} sx={{ mr: 3, width: 38, height: 38 }} />
   } else {
@@ -208,10 +208,8 @@ const UserList = () => {
   useEffect(() => {
     dispatch(
       fetchData({
-        role: '',
-        q: value,
-        status: '',
-        currentPlan: plan
+        roles: '',
+        status: ''
       })
     )
   }, [dispatch, plan, value])

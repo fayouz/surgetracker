@@ -3,7 +3,7 @@ import { ThemeColor } from 'src/@core/layouts/types'
 
 export type UsersType = {
   id: number
-  roles: string
+  roles: string[]
   email: string
   
   firstname: string
@@ -13,7 +13,7 @@ export type UsersType = {
 
 export type UsersTypeOld = {
   id: number
-  roles: string
+  role: string
   email: string
   status: string
   avatar: string
@@ -22,10 +22,6 @@ export type UsersTypeOld = {
   country: string
   contact: string
   fullName: string
-
-  firstname: string
-
-  lastname: string
   username: string
   currentPlan: string
   avatarColor?: ThemeColor

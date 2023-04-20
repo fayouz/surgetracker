@@ -130,7 +130,7 @@ const UserDropdown = (props: Props) => {
             </Badge>
             <Box sx={{ display: 'flex', ml: 2.5, alignItems: 'flex-start', flexDirection: 'column' }}>
               <Typography sx={{ fontWeight: 500 }}>{user?.firstname} {user?.lastname}</Typography>
-              <Typography variant='body2'>{i18next.t(getTextForRole(user?.roles)) }</Typography>
+
 
             </Box>
           </Box>

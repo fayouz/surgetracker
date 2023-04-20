@@ -31,8 +31,6 @@ FROM builder_base AS dev
 ENV API_PLATFORM_CLIENT_GENERATOR_OUTPUT .
 RUN yarn global add @api-platform/client-generator
 
-RUN set -eux; \
-	yarn build
 
 CMD ["yarn", "dev"]
 

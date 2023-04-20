@@ -6,10 +6,8 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 import apiConfig from 'src/configs/api'
 interface DataParams {
-  q: string
-  role: string
+  roles: string
   status: string
-  currentPlan: string
 }
 
 interface Redux {

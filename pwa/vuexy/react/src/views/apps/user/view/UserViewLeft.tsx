@@ -37,7 +37,7 @@ import UserSubscriptionDialog from 'src/views/apps/user/view/UserSubscriptionDia
 
 // ** Types
 import { ThemeColor } from 'src/@core/layouts/types'
-import { UsersType } from 'src/types/apps/userTypes'
+import {UsersType, UsersTypeOld} from 'src/types/apps/userTypes'
 
 // ** Utils Import
 import { getInitials } from 'src/@core/utils/get-initials'
@@ -46,7 +46,7 @@ interface ColorsType {
   [key: string]: ThemeColor
 }
 
-const data: UsersType = {
+const data: UsersTypeOld = {
   id: 1,
   role: 'admin',
   status: 'active',

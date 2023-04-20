@@ -24,14 +24,14 @@ import { useForm, Controller } from 'react-hook-form'
 import Icon from 'src/@core/components/icon'
 
 // ** Store Imports
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from "react-redux"
 
 // ** Actions Imports
 import { addUser } from 'src/store/apps/user'
 
 // ** Types Imports
 import { RootState, AppDispatch } from 'src/store'
-import { UsersType } from 'src/types/apps/userTypes'
+import {UsersType, UsersTypeOld} from 'src/types/apps/userTypes'
 
 interface SidebarAddUserType {
   open: boolean
@@ -119,8 +119,8 @@ const SidebarAddUser = (props: SidebarAddUserType) => {
     resolver: yupResolver(schema)
   })
   const onSubmit = (data: UserData) => {
-    if (store.allData.some((u: UsersType) => u.email === data.email || u.username === data.username)) {
-      store.allData.forEach((u: UsersType) => {
+    if (store.allData.some((u: UsersTypeOld) => u.email === data.email || u.username === data.username)) {
+      store.allData.forEach((u: UsersTypeOld) => {
         if (u.email === data.email) {
           setError('email', {
             message: 'Email already exists!'
