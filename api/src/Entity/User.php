@@ -12,13 +12,15 @@ use App\Filter\JsonFilter;
 use App\Repository\UserRepository;
 use App\State\UserMeStateProvider;
 use App\State\UserProcessor;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Lexik\Bundle\JWTAuthenticationBundle\Security\Authentication\Provider\JWTProvider;
-use Lexik\Bundle\JWTAuthenticationBundle\Security\User\JWTUserProvider;
+use Ramsey\Uuid\Doctrine\UuidBinaryType;
+use Ramsey\Uuid\Doctrine\UuidV7Generator;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Security\User\JWTUserInterface;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
+
 
 
 #[ApiResource(
@@ -41,16 +43,16 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 )]
 #[ApiFilter(SearchFilter::class, properties: ['firstname' => 'ipartial'])]
 #[ApiFilter(SearchFilter::class, properties: ['lastname' => 'ipartial'])]
-#[ApiFilter(JsonFilter::class, properties: ['roles' => 'ipartial'])]
+#[ApiFilter(JsonFilter::class, properties: ['roles' => ['strategy' => 'exact']  ])]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 class User  implements UserInterface, PasswordAuthenticatedUserInterface, JWTUserInterface
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
-
+    #[ORM\Column(type: UuidBinaryType::NAME, unique: true)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: UuidV7Generator::class)]
+    private $id;
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
@@ -69,7 +71,13 @@ class User  implements UserInterface, PasswordAuthenticatedUserInterface, JWTUse
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $lastname = null;
 
-    public function getId(): ?int
+    #[ORM\ManyToOne(targetEntity: UserStatus::class, cascade: ['persist', 'remove'],inversedBy: "users")]
+    private $status;
+
+    #[ORM\Column(type: Types::STRING, nullable: true, length: 8000 )]
+    private $avatar = null;
+
+    public function getId(): string
     {
         return $this->id;
     }
@@ -148,23 +156,19 @@ class User  implements UserInterface, PasswordAuthenticatedUserInterface, JWTUse
      */
     public static function createFromPayload($username, array $payload)
     {
-
         return new self(
             $username,
-            $payload['roles'],
-            $payload['email']
+            $payload['roles']
         );
     }
 
     /**
      * @return string[]
      */
-    public function __construct($username, array $roles, $email)
+    public function __construct($email, array $roles = array())
     {
-        $this->username = $username;
-        $this->roles = $roles;
         $this->email = $email;
-
+        $this->roles = $roles;
     }
 
     public function getFirstname(): ?string
@@ -190,4 +194,25 @@ class User  implements UserInterface, PasswordAuthenticatedUserInterface, JWTUse
 
         return $this;
     }
+
+    public function getAvatar(): string
+    {
+        $tempFile = tempnam(sys_get_temp_dir(), 'avatar');
+        file_put_contents($tempFile, $this->avatar);
+        $tempFile = new File($tempFile);
+        $tempFile->getMimeType();
+
+        return $this->avatar;
+    }
+
+    public function setAvatar( $avatar): self
+    {
+        $this->avatar = $avatar;
+
+
+        return $this;
+    }
+
+
+
 }

@@ -337,7 +337,6 @@ final class JsonFilter extends AbstractFilter implements JsonFilterInterface
     private function getPropertyStrategy(string $property)
     {
         $propertyConfig = $this->getProperties()[$property];
-
         return $propertyConfig['strategy'] ?? self::STRATEGY_PARTIAL;
     }
 
@@ -542,34 +541,30 @@ final class JsonFilter extends AbstractFilter implements JsonFilterInterface
         string $jsonKey,
         $value,
         bool $caseSensitive
-    ) {
+    ): void {
         $wrapCase = $this->createWrapCase($caseSensitive);
         $valueParameter = $queryNameGenerator->generateParameterName($jsonColumn);
         $jsonColumnWithAlias = $wrapCase("{$alias}.{$jsonColumn}");
-
 
         switch ($strategy) {
             case null:
             case self::STRATEGY_EXACT:
             $value = 'ROLE_'.strtoupper($value);
+
             $queryBuilder
                 ->andWhere(
                     "JSONB_CONTAINS(o.roles, '\"" . $value . "\"') = true"
                 );
+
             break;
 
             case self::STRATEGY_PARTIAL:
-                $value = 'ROLE_'.strtoupper($value);
-                $value = 'ROLE_US';
                 $queryBuilder
                     ->andWhere(
-                        "JSON_GET_TEXT(o.roles) like '%AD%'"
-                    );
-
-                //dd($queryBuilder->getQuery());
-               /* "select o
-                            from JSONB_ARRAY_ELEMENTS_TEXT(o.roles) as o(roles)
-                            where o.roles like '%ROL%'"*/
+                        "JSON_UNQUOTE(JSON_EXTRACT({$jsonColumnWithAlias}, '$.{$jsonKey}')) LIKE "
+                        . $wrapCase("CONCAT(:{$valueParameter}, '%%')")
+                    )
+                    ->setParameter($valueParameter, $value, Types::STRING);
                break;
 
             case self::STRATEGY_START:

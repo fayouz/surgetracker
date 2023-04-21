@@ -3,8 +3,8 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "email": "test4@test.com",
-  "password": "test"
+  "email": "elfayouz@gmail.com",
+  "password": "admin"
 }
 
 ###
@@ -36,7 +36,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ###
-GET https://api.todolist.local/users?roles=admin
+GET https://api.todolist.local/users?roles=user
 Accept: application/json
 Cookie: XDEBUG_SESSION=PHPSTORM-FAEZ
 Content-Type: application/json
@@ -45,3 +45,13 @@ Authorization: Bearer {{token}}
 ###
 OPTIONS https://localhost/register
 
+
+###
+GET https://api.todolist.local/user_statuses
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+> {%
+    client.global.set("token", response.body.token)
+%}

@@ -237,9 +237,18 @@ const UserList = ({ apiData }: InferGetStaticPropsType<typeof getStaticProps>) =
 
   useEffect(() => {
 
-    let params = {
-      roles:role,
-      status
+    let params = {}
+
+    if(status){
+        params = Object.assign(params, {
+            status
+        })
+    }
+
+    if(role){
+        params = Object.assign(params, {
+            roles: role
+        })
     }
 
     if(value) {

@@ -13,7 +13,10 @@ services:
       #- /srv/app/vendor
     environment:
       # See https://xdebug.org/docs/all_settings#mode
-      XDEBUG_MODE: "${XDEBUG_MODE:-off}"
+      XDEBUG_MODE: off
+      XDEBUG_CONFIG: >-
+        client_host=host.docker.internal
+        idekey=PHPSTORM-FAEZ
     extra_hosts:
       # Ensure that host.docker.internal is correctly defined on Linux
       - host.docker.internal:host-gateway
@@ -52,8 +55,8 @@ services:
 ###> doctrine/doctrine-bundle ###
   database:
     ports:
-      - target: 5432
-        published: 5432
+      - target: 3306
+        published: 3306
         protocol: tcp
 ###< doctrine/doctrine-bundle ###
 

@@ -2,19 +2,20 @@
 
 namespace App\State;
 
-use ApiPlatform\Metadata\CollectionOperationInterface;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\State\ProcessorInterface;
 use App\Entity\User;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 
 final class UserProcessor implements ProcessorInterface
 {
 
-    public function __construct(private ProcessorInterface $persistProcessor,private UserPasswordHasherInterface $passwordHasher)
+    public function __construct(
+        private readonly ProcessorInterface $persistProcessor,
+        private UserPasswordHasherInterface $passwordHasher
+    )
     {
     }
 
@@ -23,7 +24,7 @@ final class UserProcessor implements ProcessorInterface
      */
     public function process($data, Operation $operation, array $uriVariables = [], array $context = [])
     {
-        if($operation instanceof Post && $data->getPassword()){
+        if ($operation instanceof Post && $data->getPassword()) {
             $data->setPassword(
                 $this->passwordHasher->hashPassword($data, $data->getPassword())
             );
@@ -31,7 +32,6 @@ final class UserProcessor implements ProcessorInterface
 
         return $this->persistProcessor->process($data, $operation, $uriVariables, $context);
     }
-
 
 
     public function supports($data): bool

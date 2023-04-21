@@ -12,12 +12,16 @@ WORKDIR /srv/app
 COPY --from=mlocati/php-extension-installer --link /usr/bin/install-php-extensions /usr/local/bin/
 
 # persistent / runtime deps
+
 RUN apk add --no-cache \
 		acl \
 		fcgi \
 		file \
 		gettext \
 		git \
+        icu-dev \
+        libzip-dev \
+        zip \
 	;
 
 RUN set -eux; \
@@ -31,7 +35,8 @@ RUN set -eux; \
 ###> recipes ###
 ###> doctrine/doctrine-bundle ###
 RUN set -eux; \
-    install-php-extensions pdo_pgsql
+    install-php-extensions pdo_mysql \
+;
 ###< doctrine/doctrine-bundle ###
 ###< recipes ###
 
